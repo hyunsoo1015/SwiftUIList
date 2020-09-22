@@ -1,16 +1,29 @@
-//
-//  ContentView.swift
-//  SwiftUIList
-//
-//  Created by 김현수 on 2020/09/21.
-//  Copyright © 2020 Hyun Soo Kim. All rights reserved.
-//
-
 import SwiftUI
 
-struct ContentView: View {
+//List에 출력할 하나의 셀
+struct ListCell: View {
+    var car: Car //출력할 데이터
     var body: some View {
-        Text("Hello, World!")
+        NavigationLink(destination: CarDetail(selectedCar: car)) {
+            
+        HStack {
+            Image(car.imageName).resizable().aspectRatio(contentMode: .fit).frame(width: 100, height: 60)
+            Text(car.name)
+            }
+        }
+    }
+}
+
+struct ContentView: View {
+    @ObservedObject var carStroe: CarStore = CarStore(cars: carData)
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(carStroe.cars) {
+                    car in ListCell(car: car)
+                }
+            }
+        }
     }
 }
 
